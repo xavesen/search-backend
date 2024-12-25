@@ -2,10 +2,17 @@ package main
 
 import (
 	"context"
+	"os"
 
+	"github.com/xavesen/search-backend/internal/config"
 	"github.com/xavesen/search-backend/internal/queue"
 )
 
 func main() {
-	queue.StartReader(context.TODO(), []string{"localhost:9092"}, "test", "some-group-id", 5)
+	config, err := config.LoadConfig()
+	if err != nil {
+		os.Exit(1)
+	}
+	
+	queue.StartReader(context.TODO(), config.KafkaAddrs, config.KafkaTopic, config.KafkaGroupId, config.KafkaCommitInterval)
 }
