@@ -14,6 +14,10 @@ type Config struct {
 	KafkaGroupId			string		`mapstructure:"KAFKA_GROUP_ID"`
 	KafkaCommitInterval		int			`mapstructure:"KAFKA_COMMIT_INTERVAL"`
 
+	ElasticSearchURLsStr	string		`mapstructure:"ELASTIC_SEARCH_URL"`
+	ElasticSearchURLs		[]string
+	ElasticSearchKey		string		`mapstructure:"ELASTIC_SEARCH_KEY"`
+
 	LogLevel 				log.Level	`mapstructure:"LOG_LEVEL"`
 }
 
@@ -29,6 +33,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	config.KafkaAddrs = strings.Split(config.KafkaAddrsStr, ";")
+	config.ElasticSearchURLs = strings.Split(config.ElasticSearchURLsStr, ";")
 
 	log.Infof("Setting log level to %s", config.LogLevel.String())
 	log.SetLevel(config.LogLevel)
